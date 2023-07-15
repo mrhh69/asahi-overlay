@@ -45,6 +45,7 @@ src_prepare() {
 	# any tertiary operators ? add them : be sad;
 	use experimental || cp "${FILESDIR}"/config .config
 	use experimental && cp "${FILESDIR}"/config.edge .config
+	echo "CONFIG_LOCALVERSION=\"$(use experimental && echo -edge)-dist\"" >> .config
 
 	echo "-${MY_TAG}" > localversion.10-revision
 }
@@ -78,8 +79,17 @@ src_install() {
 	local kernel_dir=/usr/src/linux-${kernel_rel}
 	local td=${ED}/${kernel_dir}
 	dodir ${kernel_dir}/arch/arm64
-	mv include ${td}
+	mv include scripts ${td}
 	mv arch/arm64/include ${td}/arch/arm64
+
+	find -type f '!' '(' -name 'Makefile*' -o -name 'Kconfig*' ')' \
+		-delete || die
+	find -type l -delete || die
+	cp -p -R * "${kernel_dir}" || die
+
+	# fix source tree and build dir symlinks
+	dosym "../../../${kernel_dir}" "${ED}/lib/modules/${kernel_rel}/build"
+	dosym "../../../${kernel_dir}" "${ED}/lib/modules/${kernel_rel}/source"
 
 	# initramfs (dracut)
 
