@@ -6,5 +6,5 @@ HOMEPAGE=https://asahilinux.org
 IUSE=experimental
 KEYWORDS=~arm64
 SLOT=0
-SRC_URI=https://github.com/AsahiLinux/linux/archive/refs/tags/asahi-6.3-12.tar.gz
-_md5_=b77086d193466a1d6c33f2ba0fc90719
+SRC_URI=https://github.com/AsahiLinux/linux/archive/refs/tags/asahi-6.3-12.tar.gz https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.edge
+_md5_=720e60f243879323822506ff8a9bf065
