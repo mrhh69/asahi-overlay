@@ -1,11 +1,11 @@
+# license here ig
+# written by mrhh69
 
 EAPI=8
 SLOT=0
 
-
 DESCRIPTION="Build downstream Asahi Linux"
-HOMEPAGE="https://github.com/asahilinux/linux"
-
+HOMEPAGE="https://asahilinux.org"
 
 MY_TAG="$(ver_cut 5)"
 MY_P="asahi-$(ver_cut 1-2)-${MY_TAG}"
@@ -14,7 +14,7 @@ MY_P="asahi-$(ver_cut 1-2)-${MY_TAG}"
 SRC_URI="https://github.com/AsahiLinux/linux/archive/refs/tags/${MY_P}.tar.gz"
 
 PATCHES=(
-	${FILESDIR}/${PVR}-bindgen.patch
+	"${FILESDIR}"/${PVR}-bindgen.patch
 )
 
 IUSE="experimental"
@@ -36,7 +36,7 @@ BDEPEND="
 src_unpack() {
 	unpack ${A}
 	# fix this wildcard to point to actual file
-	mv ${WORKDIR}/* ${WORKDIR}/${PF}
+	mv "${WORKDIR}"/* "${WORKDIR}"/${PF}
 }
 
 src_prepare() {
@@ -45,7 +45,6 @@ src_prepare() {
 	# any tertiary operators ? add them : be sad;
 	use experimental || cp "${FILESDIR}"/config .config
 	use experimental && cp "${FILESDIR}"/config.edge .config
-
 
 	echo "-${MY_TAG}" > localversion.10-revision
 }
@@ -58,7 +57,6 @@ src_configure() {
 src_compile() {
 	MAKEARGS=()
 	use experimental && MAKEARGS+=(LLVM=1)
-
 
 	emake ${MAKEARGS[@]}
 }
@@ -88,9 +86,9 @@ src_install() {
 	# should I use the installed global modules for dracut, or local ones?
 	# (look at the --local flag again)
 	# ldconfig seems to be violating the gentoo sandbox, this is a _really_ ugly hack
-	DRACUT_LDCONFIG=true dracut ${ED}/boot/initramfs-${kernel_rel}.img ${kernel_rel} \
-		--tmpdir ${T} \
-		--kmoddir ${ED}/lib/modules/${kernel_rel} \
+	DRACUT_LDCONFIG=true dracut "${ED}"/boot/initramfs-${kernel_rel}.img ${kernel_rel} \
+		--tmpdir "${T}" \
+		--kmoddir "${ED}"/lib/modules/${kernel_rel} \
 		--compress gzip \
 		|| die
 }
