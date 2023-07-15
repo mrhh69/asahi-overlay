@@ -88,11 +88,11 @@ src_install() {
 	find -type f '!' '(' -name 'Makefile*' -o -name 'Kconfig*' ')' \
 		-delete || die
 	find -type l -delete || die
-	cp -p -R * "${kernel_dir}" || die
+	cp -p -R * "${td}" || die
 
 	# fix source tree and build dir symlinks
-	dosym "../../../${kernel_dir}" "${ED}/lib/modules/${kernel_rel}/build"
-	dosym "../../../${kernel_dir}" "${ED}/lib/modules/${kernel_rel}/source"
+	dosym "../../../${kernel_dir}" "/lib/modules/${kernel_rel}/build"
+	dosym "../../../${kernel_dir}" "/lib/modules/${kernel_rel}/source"
 
 	# initramfs (dracut)
 
