@@ -1,0 +1,9 @@
+DEFINED_PHASES=prepare unpack
+DESCRIPTION=Build downstream Asahi Linux
+EAPI=8
+HOMEPAGE=https://github.com/asahilinux/linux
+IUSE=experimental
+KEYWORDS=~arm64
+SLOT=0
+SRC_URI=https://github.com/AsahiLinux/linux/archive/refs/tags/asahi-6.3-12.tar.gz
+_md5_=92efd3a7eda2d7e17369bcbe762af6b5
