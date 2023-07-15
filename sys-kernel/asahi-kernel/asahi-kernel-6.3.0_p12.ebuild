@@ -10,8 +10,12 @@ HOMEPAGE="https://asahilinux.org"
 MY_TAG="$(ver_cut 5)"
 MY_P="asahi-$(ver_cut 1-2)-${MY_TAG}"
 
-# should I add the configs to src_uri?
-SRC_URI="https://github.com/AsahiLinux/linux/archive/refs/tags/${MY_P}.tar.gz"
+# idk if I should really tie the configs to the main branch
+SRC_URI="
+https://github.com/AsahiLinux/linux/archive/refs/tags/${MY_P}.tar.gz
+https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config
+https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.edge
+"
 
 PATCHES=(
 	"${FILESDIR}"/${PVR}-bindgen.patch
@@ -34,7 +38,7 @@ BDEPEND="
 "
 
 src_unpack() {
-	unpack ${A}
+	unpack ${MY_P}.tar.gz
 	# fix this wildcard to point to actual file
 	mv "${WORKDIR}"/* "${WORKDIR}"/${PF}
 }
@@ -42,17 +46,16 @@ src_unpack() {
 src_prepare() {
 	default
 
-	# any tertiary operators ? add them : be sad;
-	use experimental || cp "${FILESDIR}"/config .config
-	use experimental && cp "${FILESDIR}"/config.edge .config
+	cp "${DISTDIR}"/config .config
+	use experimental && cat "${DISTDIR}"/config.edge >> .config
 	echo "CONFIG_LOCALVERSION=\"$(use experimental && echo -edge)-dist\"" >> .config
 
 	echo "-${MY_TAG}" > localversion.10-revision
 }
 
 src_configure() {
-	emake olddefconfig
 	use experimental && emake rustavailable || die
+	emake olddefconfig
 }
 
 src_compile() {
