@@ -2,7 +2,7 @@
 # written by mrhh69
 
 EAPI=8
-SLOT=12
+SLOT=13
 
 DESCRIPTION="Build downstream Asahi Linux"
 HOMEPAGE="https://asahilinux.org"
