@@ -81,14 +81,21 @@ src_install() {
 	local kernel_rel=$(make kernelrelease)
 	local kernel_dir=/usr/src/linux-${kernel_rel}
 	local td=${ED}/${kernel_dir}
-	dodir ${kernel_dir}/arch/arm64
-	mv include scripts ${td}
-	mv arch/arm64/include ${td}/arch/arm64
+	# NOTE(self): why doesn't gentoo have an install command to automatically to `insinto`, am I blind?
+	insinto ${kernel_dir}
+	doins -r include scripts
+	insinto ${kernel_dir}/arch/arm64/
+	doins -r arch/arm64/include
+	# for update-m1n1
+	insinto ${kernel_dir}/arch/arm64/boot/dts/apple/
+	doins arch/arm64/boot/dts/apple/*.dtb
 
 	find -type f '!' '(' -name 'Makefile*' -o -name 'Kconfig*' ')' \
-		-delete || die
-	find -type l -delete || die
-	cp -p -R * "${td}" || die
+		-delete
+	find -type l -delete
+	insinto ${kernel_dir}
+	doins -r *
+	# cp -p -R * "${td}" || die
 
 	# fix source tree and build dir symlinks
 	dosym "../../../${kernel_dir}" "/lib/modules/${kernel_rel}/build"
