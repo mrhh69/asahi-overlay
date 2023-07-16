@@ -39,8 +39,8 @@ BDEPEND="
 
 src_unpack() {
 	unpack ${MY_P}.tar.gz
-	# fix this wildcard to point to actual file
-	mv "${WORKDIR}"/* "${WORKDIR}"/${PF}
+	# correct archive directory name
+	mv "${WORKDIR}"/linux-${MY_P} "${WORKDIR}"/${PF}
 }
 
 src_prepare() {
@@ -66,8 +66,8 @@ src_compile() {
 }
 
 src_install() {
-
 	# install modules and kernel image
+
 	dodir /boot
 	emake "${MAKEARGS[@]}" \
 		INSTALL_MOD_PATH="${ED}" \
@@ -75,9 +75,7 @@ src_install() {
 		modules_install install
 
 	# install needed kernel source files
-	#
-	# maybe figure out what other stuff has to go into /usr/src?
-	# is it just the 'include's?
+
 	local kernel_rel=$(make kernelrelease)
 	local kernel_dir=/usr/src/linux-${kernel_rel}
 	local td=${ED}/${kernel_dir}

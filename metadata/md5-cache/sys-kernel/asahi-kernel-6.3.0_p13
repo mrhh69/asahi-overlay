@@ -7,4 +7,4 @@ IUSE=experimental
 KEYWORDS=~arm64
 SLOT=13
 SRC_URI=https://github.com/AsahiLinux/linux/archive/refs/tags/asahi-6.3-13.tar.gz https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.edge
-_md5_=161b06baa18101b443bd7685591fe170
+_md5_=559dcc5336c8e6c4d7c8b463b27f9ff5
