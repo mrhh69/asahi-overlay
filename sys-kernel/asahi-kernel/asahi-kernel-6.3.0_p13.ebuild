@@ -1,11 +1,11 @@
-# license here ig
 # written by mrhh69
 
 EAPI=8
-SLOT=13
+SLOT="${PVR}"
 
 DESCRIPTION="Build downstream Asahi Linux"
 HOMEPAGE="https://asahilinux.org"
+LICENSE="GPL-2" # I think
 
 MY_TAG="$(ver_cut 5)"
 MY_P="asahi-$(ver_cut 1-2)-${MY_TAG}"
@@ -18,7 +18,8 @@ https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.e
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PVR}-bindgen.patch
+	#"${FILESDIR}"/${PVR}-bindgen.patch
+	"${FILESDIR}"/bindgen.patch
 )
 
 IUSE="experimental"
