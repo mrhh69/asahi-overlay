@@ -7,6 +7,8 @@ DESCRIPTION="Build downstream Asahi Linux"
 HOMEPAGE="https://asahilinux.org"
 LICENSE="GPL-2" # I think
 
+inherit toolchain-funcs
+
 MY_TAG="$(ver_cut 5)"
 MY_P="asahi-$(ver_cut 1-2)-${MY_TAG}"
 
@@ -18,8 +20,7 @@ https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.e
 "
 
 PATCHES=(
-	#"${FILESDIR}"/${PVR}-bindgen.patch
-	"${FILESDIR}"/bindgen.patch
+
 )
 
 IUSE="experimental"
@@ -33,7 +34,20 @@ KEYWORDS="~arm64"
 # also need to figure out if requiring use flags directly from dev-lang/rust is right
 BDEPEND="
 	experimental? (
-		>=virtual/rust-1.66.0
+		|| (
+			(
+				sys-devel/clang:16
+				sys-devel/llvm:16
+				virtual/rust:0/llvm-16
+				=dev-util/bindgen-0.65.1
+			)
+			(
+				sys-devel/clang:15
+				sys-devel/llvm:15
+				virtual/rust:0/llvm-15
+				=dev-util/bindgen-0.56.0
+			)
+		)
 		dev-lang/rust[rust-src]
 	)
 "
@@ -45,6 +59,14 @@ src_unpack() {
 }
 
 src_prepare() {
+	use experimental && {
+		tc-is-clang || die
+		if [[ $(clang-major-version) == 16 ]]
+		then
+			PATCHES+="${FILESDIR}"/bindgen.patch
+		fi
+	}
+
 	default
 
 	cp "${DISTDIR}"/config .config
