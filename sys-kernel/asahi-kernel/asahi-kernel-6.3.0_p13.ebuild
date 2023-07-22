@@ -23,7 +23,7 @@ PATCHES=(
 	"${FILESDIR}"/bindgen.patch
 )
 
-KEYWORDS="~arm64"
+KEYWORDS="arm64"
 IUSE="experimental"
 
 #BDEPEND="
