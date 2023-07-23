@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.e
 S=${WORKDIR}/linux-${MY_P}
 
 PATCHES=(
-	# "${FILESDIR}"/rustavial.patch
+	"${FILESDIR}"/rust_is_available.patch
 	"${FILESDIR}"/bindgen.patch
 )
 
@@ -34,8 +34,6 @@ IUSE="debug experimental"
 #"
 
 src_prepare() {
-	# voodoo magic: my brain is in pain because `default` doesn't work but `eapply` does
-	eapply "${FILESDIR}"/rustavail.patch
 	default
 
 	cp "${DISTDIR}/config" .config || die

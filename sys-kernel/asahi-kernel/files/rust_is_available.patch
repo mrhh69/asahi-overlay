@@ -12,7 +12,7 @@ index aebbf1913..9a3b708dd 100755
  	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
  		| grep -F 'clang version ' \
 -		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-+  | sed -n 's/.*clang version \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p' \
++		| sed -n 's/.*clang version \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p' \
  		| head -n 1 \
  )
  bindgen_libclang_min_version=$($min_tool_version llvm)
