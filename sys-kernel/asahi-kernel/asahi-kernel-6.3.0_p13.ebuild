@@ -53,9 +53,16 @@ src_prepare() {
 	kernel-build_merge_configs "${merge_configs[@]}"
 }
 
+# NOTE: `default` doesn't seem to call the kernel-build src_configure
+# is there an easy way to keep that behaviour without removing any custom src_configure functionality?
 src_configure() {
-	default
 	# sanity check for testing: maybe remove once BDEPS is sorted out
 	# it would be nice to run emake with the MAKEARGS from kernel-build  ...
 	use experimental && emake rustavailable || die
+	kernel-build_src_configure
 }
+
+# TODO: look into QA pre-stripped warnings
+# they look like files that should not be installed anyway
+# maybe do a `make clean` before the sources are installed
+# (though that might require a kernel-build eclass change)
