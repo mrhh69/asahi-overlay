@@ -19,12 +19,12 @@ https://raw.githubusercontent.com/AsahiLinux/PKGBUILDs/main/linux-asahi/config.e
 S=${WORKDIR}/linux-${MY_P}
 
 PATCHES=(
-#	"${FILESDIR}"/rustavial.patch
+	# "${FILESDIR}"/rustavial.patch
 	"${FILESDIR}"/bindgen.patch
 )
 
 KEYWORDS="arm64"
-IUSE="experimental"
+IUSE="debug experimental"
 
 #BDEPEND="
 #	debug? ( dev-util/pahole )
@@ -47,13 +47,15 @@ src_prepare() {
 	local merge_configs=()
 	use experimental && merge_configs+=("${DISTDIR}/config.edge")
 
-	local merge_configs+=("${T}"/version.config)
+	# needs to be merged after config.edge, so that it overrides the version
+	merge_configs+=("${T}"/version.config)
 
 	kernel-build_merge_configs "${merge_configs[@]}"
 }
 
-#src_configure() {
-#	default
-#	# sanity check for testing: maybe remove once BDEPS is sorted out
-#	use experimental && emake rustavailable || die
-#}
+src_configure() {
+	default
+	# sanity check for testing: maybe remove once BDEPS is sorted out
+	# it would be nice to run emake with the MAKEARGS from kernel-build  ...
+	use experimental && emake rustavailable || die
+}
