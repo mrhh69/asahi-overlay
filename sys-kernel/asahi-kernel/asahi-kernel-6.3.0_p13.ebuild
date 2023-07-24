@@ -33,6 +33,10 @@ IUSE="debug experimental"
 #	>=virtual/dist-kernel-${PV}
 #"
 
+src_unpack() {
+	unpack ${MY_P}.tar.gz
+}
+
 src_prepare() {
 	default
 
@@ -52,7 +56,6 @@ src_prepare() {
 }
 
 # NOTE: `default` doesn't seem to call the kernel-build src_configure
-# is there an easy way to keep that behaviour without removing any custom src_configure functionality?
 src_configure() {
 	# sanity check for testing: maybe remove once BDEPS is sorted out
 	# it would be nice to run emake with the MAKEARGS from kernel-build  ...
