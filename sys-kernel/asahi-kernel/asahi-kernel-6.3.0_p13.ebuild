@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit kernel-build #toolchain-funcs
+inherit kernel-build
 
 MY_TAG="$(ver_cut 5)"
 MY_P="asahi-$(ver_cut 1-2)-${MY_TAG}"
@@ -67,3 +67,16 @@ src_configure() {
 # they look like files that should not be installed anyway
 # maybe do a `make clean` before the sources are installed
 # (though that might require a kernel-build eclass change)
+
+# NOTE: this is for bypassing kernel-install version checking stuff
+# it wants kernel version to be: ${PV} (so x.x.x_p$tag*)
+# asahi-sources looks like this: (x.x.x-$tag*)
+# PROS:
+# * same versioning scheme as upstream asahi-overlay
+# CONS:
+# * bypassing upstream gentoo eclasses is kind of iffy
+# * misses the rest of kernel-install_pkg_preinst
+# 	- (adjusting symlinks for merged-usr)
+pkg_preinst() {
+	echo "tests"
+}
